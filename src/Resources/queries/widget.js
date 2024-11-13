@@ -111,6 +111,8 @@
         },
 
         identifyDuplicates: function(statements) {
+            if (! Array.isArray(statements)) statements = [];
+
             const makeStatementHash = (statement) => {
                 return [
                     statement.sql,
@@ -341,10 +343,10 @@
             const $li = $('<li />').addClass(csscls('table-list-item'));
             const $muted = $('<span />').addClass(css('text-muted'));
 
-            let i = 0;
-            for (const value of values) {
+            for (const key in values) {
+                const value = values[key];
                 if (showLineNumbers) {
-                    $ul.append($li.clone().append([$muted.clone().text(`${i}:`), '&nbsp;', $('<span/>').text(value)]));
+                    $ul.append($li.clone().append([$muted.clone().text(`${key}:`), '&nbsp;', $('<span/>').text(value)]));
                 } else {
                     if (caption === 'Hints') {
                         $ul.append($li.clone().append(value));
@@ -352,7 +354,6 @@
                         $ul.append($li.clone().text(value));
                     }
                 }
-                i++;
             }
 
             return this.renderDetail(caption, icon, $ul);
